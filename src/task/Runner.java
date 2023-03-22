@@ -1,16 +1,14 @@
-package practice;
-
-import practice.BusinessTrip;
-import practice.BusinessTripsLibrary;
-
+package task;
+import task.BusinessTrip;
+import task.BusinessTripsLibrary;
 public class Runner {
     public static void main(String[] args) {
         BusinessTrip[] businessTrips = new BusinessTrip[]{
-                new BusinessTrip(5556, "John Ivanov", 4551, 7),
-                new BusinessTrip(4023, "Peter Smirnov", 20049, 30),
+                new BusinessTrip("John Ivanov", 4551, 7),
+                new BusinessTrip("Peter Smirnov", 20049, 30),
                 null,
-                new BusinessTrip(0, "Irina Shayk", 1563, 9),
-                new BusinessTrip(8134444, "Bella Hadid", 1567893, 95),
+                new BusinessTrip( "Irina Shayk", 1563, 9),
+                new BusinessTrip( "Bella Hadid", 1567893, 95),
                 new BusinessTrip(),
         };
 

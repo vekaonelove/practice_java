@@ -1,4 +1,4 @@
-package practice;
+package task;
 
 public class BusinessTripsLibrary {
     BusinessTrip[] businessTrips;

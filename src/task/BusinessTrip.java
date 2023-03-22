@@ -1,28 +1,26 @@
-package practice;
+package task;
 import java.util.Objects;
 
 public class BusinessTrip {
-    private int dailyAllowance;
+    static final int DAILY_ALLOWANCE = 100;
     private String account;
     private int transportationExpenses;
     private int days;
 
-    public BusinessTrip(int dailyAllowance, String account, int transportationExpenses, int days) {
-        this.dailyAllowance = dailyAllowance;
+    public BusinessTrip(String account, int transportationExpenses, int days) {
         this.account = account;
         this.transportationExpenses = transportationExpenses;
         this.days = days;
     }
 
     public BusinessTrip() {
-        this.dailyAllowance = 1200;
         this.account = "Ivan Ivanov";
         this.transportationExpenses = 1000;
         this.days = 4;
     }
 
     public int getTotalExpensesInCents() {
-        return transportationExpenses + dailyAllowance * days;
+        return transportationExpenses + DAILY_ALLOWANCE * days;
     }
 
     public String getTotalExpenses() {
@@ -43,19 +41,11 @@ public class BusinessTrip {
         return valueInEuro;
     }
     public String show() {
-        return "dailyAllowance=" + getValueInEuro(dailyAllowance) + '\n' +
+        return "dailyAllowance=" + DAILY_ALLOWANCE + "\n" +
                 "account='" + account + "'\n" +
                 "transportationExpenses=" + getValueInEuro(transportationExpenses) + '\n' +
                 "days=" + days + '\n' +
                 "total=" + getTotalExpenses();
-    }
-
-    public double getDailyAllowance() {
-        return dailyAllowance;
-    }
-
-    public void setDailyAllowance(int dailyAllowance) {
-        this.dailyAllowance = dailyAllowance;
     }
 
     public String getAccount() {
@@ -89,21 +79,15 @@ public class BusinessTrip {
 
         BusinessTrip that = (BusinessTrip) o;
 
-        if (Double.compare(that.dailyAllowance, dailyAllowance) != 0) return false;
-        if (Double.compare(that.transportationExpenses, transportationExpenses) != 0) return false;
+        if (transportationExpenses != that.transportationExpenses) return false;
         if (days != that.days) return false;
         return Objects.equals(account, that.account);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(dailyAllowance);
-        result = (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (account != null ? account.hashCode() : 0);
-        temp = Double.doubleToLongBits(transportationExpenses);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        int result = account != null ? account.hashCode() : 0;
+        result = 31 * result + transportationExpenses;
         result = 31 * result + days;
         return result;
     }
