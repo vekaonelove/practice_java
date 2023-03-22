@@ -22,8 +22,9 @@ public class Runner {
         System.out.println(businessTripWithMaxCost.show());
 
         System.out.println("\nUpdating transportationExpenses: ");
-        businessTrips[4].setTransportationExpenses(5000);
-        System.out.println(businessTripsLibrary.getBusinessTrips()[4].show());
+        int lastIndex = businessTrips.length - 1;
+        businessTrips[lastIndex].setTransportationExpenses(5000);
+        System.out.println(businessTripsLibrary.getBusinessTrips()[lastIndex].show());
 
         System.out.println("\nDuration=" + businessTrips[0].getDays());
         System.out.println("Duration="+ businessTrips[1].getDays());

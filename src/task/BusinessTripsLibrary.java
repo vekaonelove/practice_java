@@ -9,7 +9,7 @@ public class BusinessTripsLibrary {
 
     public void print(BusinessTrip businessTrip) {
         if (businessTrip != null) {
-            System.out.println(businessTrip.toString());
+            System.out.println(businessTrip);
         } else {
             System.out.println("empty");
         }

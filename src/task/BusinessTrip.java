@@ -79,15 +79,21 @@ public class BusinessTrip {
 
         BusinessTrip that = (BusinessTrip) o;
 
-        if (transportationExpenses != that.transportationExpenses) return false;
+        if (Double.compare(that.DAILY_ALLOWANCE, DAILY_ALLOWANCE) != 0) return false;
+        if (Double.compare(that.transportationExpenses, transportationExpenses) != 0) return false;
         if (days != that.days) return false;
         return Objects.equals(account, that.account);
     }
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + transportationExpenses;
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(DAILY_ALLOWANCE);
+        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (account != null ? account.hashCode() : 0);
+        temp = Double.doubleToLongBits(transportationExpenses);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + days;
         return result;
     }
