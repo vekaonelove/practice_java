@@ -1,6 +1,5 @@
 package task;
-import task.BusinessTrip;
-import task.BusinessTripsLibrary;
+
 public class Runner {
     public static void main(String[] args) {
         BusinessTrip[] businessTrips = new BusinessTrip[]{
@@ -12,25 +11,37 @@ public class Runner {
                 new BusinessTrip(),
         };
 
-        BusinessTripsLibrary businessTripsLibrary = new BusinessTripsLibrary(businessTrips);
 
         System.out.println("Show method: ");
-        businessTripsLibrary.show();
-        BusinessTrip businessTripWithMaxCost = businessTripsLibrary.getBusinessTripWithMostExpenses();
+        for (BusinessTrip trip: businessTrips) {
+            if (trip != null) {
+                System.out.println(trip.show() + '\n');
+            }
+        }
 
         System.out.println("Business trip with max cost: ");
-        System.out.println(businessTripWithMaxCost.show());
+        int maxExpenses = 0;
+        BusinessTrip mostExpensiveTrip = null;
+
+        for (BusinessTrip trip: businessTrips) {
+            if (trip != null && trip.getTotalExpensesInCents() > maxExpenses) {
+                mostExpensiveTrip = trip;
+                maxExpenses = trip.getTotalExpensesInCents();
+            }
+        }
+        System.out.println(mostExpensiveTrip);
 
         System.out.println("\nUpdating transportationExpenses: ");
         int lastIndex = businessTrips.length - 1;
         businessTrips[lastIndex].setTransportationExpenses(5000);
-        System.out.println(businessTripsLibrary.getBusinessTrips()[lastIndex].show());
+        System.out.println(businessTrips[lastIndex].show());
 
-        System.out.println("\nDuration=" + businessTrips[0].getDays());
-        System.out.println("Duration="+ businessTrips[1].getDays());
+        System.out.println("\nDuration=" + (businessTrips[0].getDays() + businessTrips[1].getDays()));
 
-        System.out.println("\nPrint method: ");
-        businessTripsLibrary.print();
+        System.out.println("\ntoString method: ");
+        for (BusinessTrip trip: businessTrips) {
+            System.out.println(trip);
+        }
 
 
     }

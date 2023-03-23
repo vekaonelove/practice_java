@@ -14,9 +14,7 @@ public class BusinessTrip {
     }
 
     public BusinessTrip() {
-        this.account = "Ivan Ivanov";
-        this.transportationExpenses = 1000;
-        this.days = 4;
+        
     }
 
     public int getTotalExpensesInCents() {
@@ -31,13 +29,8 @@ public class BusinessTrip {
 
 
     public String getValueInEuro(int value) {
-        String valueInEuro = String.valueOf(value / 100) + '.';
-        if (String.valueOf(value % 100).length() == 2) {
-            valueInEuro += String.valueOf(value % 100);
-        } else {
-            valueInEuro += (String.valueOf(value % 100) + '0');
-        }
-
+        String valueInEuro = String.valueOf(value / 100) + '.' + String.valueOf(value % 100) +
+                (-1) * (String.valueOf(value % 100).length()-2) * '0';
         return valueInEuro;
     }
     public String show() {
@@ -71,6 +64,7 @@ public class BusinessTrip {
     public void setDays(int days) {
         this.days = days;
     }
+
 
     @Override
     public boolean equals(Object o) {
