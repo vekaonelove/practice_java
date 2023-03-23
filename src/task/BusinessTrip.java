@@ -14,9 +14,10 @@ public class BusinessTrip {
     }
 
     public BusinessTrip() {
-        
+        this.account = "";
+        this.transportationExpenses = 0;
+        this.days = 0;
     }
-
     public int getTotalExpensesInCents() {
         return transportationExpenses + DAILY_ALLOWANCE * days;
     }
@@ -29,9 +30,7 @@ public class BusinessTrip {
 
 
     public String getValueInEuro(int value) {
-        String valueInEuro = String.valueOf(value / 100) + '.' + String.valueOf(value % 100) +
-                (-1) * (String.valueOf(value % 100).length()-2) * '0';
-        return valueInEuro;
+        return String.format("%d.%02d", value / 100, value % 100);
     }
     public String show() {
         return "dailyAllowance=" + DAILY_ALLOWANCE + "\n" +
