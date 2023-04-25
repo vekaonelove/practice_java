@@ -46,15 +46,15 @@ public class Purchase implements Comparable<Purchase>{
     }
 
 
-    public Long getCost(){
+    public long getCost(){
         double cost = (PRICE * number * (100-percent)/100);
         long roundedCostInEuro = Math.round(cost);
-        return roundedCostInEuro * 100;
+        return roundedCostInEuro * 100; //in cents
     };
 
     @Override
     public String toString() {
-        return String.format("%s;%s;%s", number, percent, weekDay);
+         return String.format("%s;%s;%s", number, percent, weekDay);
     }
 
     public int compareTo(Purchase purchase){

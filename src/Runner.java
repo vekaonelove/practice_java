@@ -11,19 +11,20 @@ public class Runner {
         System.out.println(Purchase.NAME + " " + Purchase.PRICE);
         try (Scanner sc = new Scanner(new FileReader("src/in.txt"))) {
             sc.useLocale(Locale.ENGLISH);
-            final int purchasesNumber = sc.nextInt();
+            final int PURCHASES_NUMBER = sc.nextInt();
 
-            if (purchasesNumber < 0 || purchasesNumber > 9) {
+            if (PURCHASES_NUMBER < 0 || PURCHASES_NUMBER > 9) {
                 throw new RuntimeException("Incorrect number at the first line");
             }
 
-            Purchase[] purchases = new Purchase[purchasesNumber];
+            Purchase[] purchases = new Purchase[PURCHASES_NUMBER];
 
             /*** Initialize  array by the file  ***/
-            for (int i = 0; i < purchasesNumber; i++) {
-                double x = sc.nextDouble();
-                int k = sc.nextInt();
-                purchases[i] = new Purchase(i, x, k);
+            for (int i = 0; i < PURCHASES_NUMBER; i++) {
+                int numberOfUnits = sc.nextInt();
+                double discountPercent = sc.nextDouble();
+                int dayOfWeek = sc.nextInt();
+                purchases[i] = new Purchase(numberOfUnits, discountPercent, dayOfWeek);
             }
 
             /*** Initialize this array by the file data ***/
@@ -32,53 +33,90 @@ public class Runner {
             }
 
             /*** Calculate the average cost of all purchases (3 digits after the point) ***/
-
+            int totalPurchasesNumber = 0;
             long totalCost = 0;
-            for (int i = 0; i < purchasesNumber; i++) {
+            for (int i = 0; i < PURCHASES_NUMBER; i++) {
                 totalCost += purchases[i].getCost();
+                totalPurchasesNumber += purchases[i].getNumber();
             }
 
 
-            try {
-                double averageCost = totalCost / purchasesNumber;
-                System.out.printf("Average cost: %d.%03d%n", averageCost);
-            } catch (Exception e) {
-                //todo: printout error about division by zero
-            }
+            double averageCost = (double) totalCost / totalPurchasesNumber;
+            System.out.format("\nAverage cost: %.3f", averageCost);
+
 
             /*** Calculate the total cost of all purchases on Monday ***/
             long totalMondaysCost = 0;
-            for (int i = 0; i < purchasesNumber; i++) {
-                if (purchases[i].getWeekDay() == WeekDay.MONDAY) {
-                    totalMondaysCost += purchases[i].getCost();
+            for (Purchase purchase : purchases) {
+                if (purchase.getWeekDay() == WeekDay.MONDAY) {
+                    totalMondaysCost += purchase.getCost();
                 }
             }
 
-            System.out.printf("Total cost on Mondays: %s%n", totalMondaysCost);
+            System.out.println("\nTotal cost on Mondays: " + Financial.getValueInEuro(totalMondaysCost));
 
             /*** Calculate the day with the maximum purchase cost ***/
-            Map<WeekDay, Long> purchasesCostByDays = new HashMap<>();
-            for ( Purchase purchase : purchases) {
-                if()
-                long cost = purchasesCostByDays.
-                purchasesCostByDays.
+            long[] purchasesCosts = new long[PURCHASES_NUMBER];
+            for (int i = 0; i < PURCHASES_NUMBER; i++) {
+                purchasesCosts[i] = purchases[i].getCost();
             }
-            /*** Sort the array by the field number in the ascending order by the method sort of the class Arrays. ***/
-            /*double totalCost = 0;
-            int totalCostMonday = 0;
-            int maxCost = 0;
-            WeekDay maxCostDay = null;
-            double meanCost = 0.0;*/
 
-            /*for (int i=0;i<purchasesNumber;i++){
-                totalCost += purchases[i].getCost();
+            int maxIndex = 0;
+            long max = purchasesCosts[0];
+            for (int i = 1; i < PURCHASES_NUMBER; i++) {
+                if (purchasesCosts[i] > max) {
+                    max = purchasesCosts[i];
+                    maxIndex = i;
+                }
             }
-            int meanCost = (totalCost/purchasesNumber)*/
+            System.out.println("\nThe day with the maximum purchase cost: " + purchases[maxIndex].getWeekDay() + "\n");
+
+            /*** Sort the array by the field number in the ascending order by the method sort of the class Arrays. ***/
+
+            Arrays.sort(purchases);
+            for (Purchase purchase : purchases) {
+                System.out.println(purchase);
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("Input file is not found");
         }
 
 
+
+        /*** Purchase with number of units = 5 from all files ***/
+        String[] filesArray = new String[]{"src/in.txt", "src/in1.txt", "src/in2.txt", "src/in3.txt", "src/in4.txt", "src/in5.txt", "src/in6.txt"};
+
+        for (int i = 0; i < filesArray.length; i++) {
+            try (Scanner sc = new Scanner(new FileReader(filesArray[i]))) {
+                sc.useLocale(Locale.ENGLISH);
+                final int PURCHASES_NUMBER = sc.nextInt();
+
+                if (PURCHASES_NUMBER < 0 || PURCHASES_NUMBER > 9) {
+                    throw new RuntimeException("Incorrect number at the first line");
+                }
+
+                Purchase[] purchases = new Purchase[PURCHASES_NUMBER];
+
+                for (int j = 0; j < PURCHASES_NUMBER; j++) {
+                    int numberOfUnits = sc.nextInt();
+                    double discountPercent = sc.nextDouble();
+                    int dayOfWeek = sc.nextInt();
+                    purchases[j] = new Purchase(numberOfUnits, discountPercent, dayOfWeek);
+                }
+
+                Arrays.sort(purchases);
+
+                int index = Arrays.binarySearch(purchases, new Purchase(5, 0, 0));
+                if (index < 0) {
+                    System.out.println("No such element in the array");
+                }
+                else{
+                    System.out.println("\nPurchase with number of units = 5:\n" + purchases[index]);
+                }
+            } catch (FileNotFoundException e) {
+                System.err.println("Input file is not found");
+            }
+        }
     }
 }
