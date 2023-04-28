@@ -40,7 +40,7 @@ public class Runner {
                     totalMondaysCost += cost;
                 }
 
-                if (purchase.getCost() > maxCost){
+                if (cost > maxCost){
                     maxCost = cost;
                     maxCostDay = purchase.getWeekDay();
                 }
