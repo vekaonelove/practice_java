@@ -35,11 +35,11 @@ class TestRunner {
     void verifyToString() {
         //1
         Purchase purchase1 = new Purchase(5, 56.7, 3);
-        Assert.assertEquals("5;56.7;THURSDAY", purchase1.toString());
+        Assert.assertEquals("5;56.7;WEDNESDAY;21700", purchase1.toString());
 
         //2
         Purchase purchase2 = new Purchase(22, 12.34, 1);
-        Assert.assertEquals("22;12.34;TUESDAY", purchase2.toString());
+        Assert.assertEquals("22;12.34;MONDAY;192900", purchase2.toString());
 
     }
 
@@ -50,7 +50,7 @@ class TestRunner {
         Purchase purchase1 = new Purchase(purchase.getNumber(),purchase.getPercent(),purchase.getWeekDay());
 
         Assert.assertEquals(17, purchase.getNumber());
-        Assert.assertEquals(WeekDay.SUNDAY, purchase.getWeekDay());
+        Assert.assertEquals(WeekDay.SATURDAY, purchase.getWeekDay());
         Assert.assertEquals(0.334, purchase.getPercent(),0.0001);;
 
         Assert.assertEquals(purchase1.getNumber(), purchase.getNumber());

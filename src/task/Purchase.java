@@ -2,7 +2,7 @@ package task;
 import task.WeekDay;
 public class Purchase implements Comparable<Purchase>{
     public static final String NAME = "IPhone";
-    public static final int PRICE = 100;
+    public static final int PRICE = 10000; //IN CENTS!
     private int number;
     private double percent;
     private WeekDay weekDay;
@@ -47,14 +47,14 @@ public class Purchase implements Comparable<Purchase>{
 
 
     public long getCost(){
-        double cost = (PRICE * number * (100-percent)/100);
-        long roundedCostInEuro = Math.round(cost);
-        return roundedCostInEuro * 100; //in cents
+        double cost = (PRICE * number * (100-percent)/100) / 100; // [cents] * coefficient * coefficient / 100 = [Euro]
+        long roundedCostInEuro = Math.round(cost); //rounded to 1 Euro (in longs)
+        return roundedCostInEuro * 100; // in cents
     };
 
     @Override
     public String toString() {
-         return String.format("%s;%s;%s", number, percent, weekDay);
+         return String.format("%s;%s;%s;%s", number, percent, weekDay, getCost());
     }
 
     public int compareTo(Purchase purchase){

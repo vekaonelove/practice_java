@@ -8,18 +8,13 @@ import java.util.*;
 
 public class Runner {
     public static void main(String[] args) {
-        System.out.println(Purchase.NAME + " " + Purchase.PRICE);
         try (Scanner sc = new Scanner(new FileReader("src/in.txt"))) {
             sc.useLocale(Locale.ENGLISH);
             final int PURCHASES_NUMBER = sc.nextInt();
 
-            if (PURCHASES_NUMBER < 0 || PURCHASES_NUMBER > 9) {
-                throw new RuntimeException("Incorrect number at the first line");
-            }
-
             Purchase[] purchases = new Purchase[PURCHASES_NUMBER];
 
-            /*** Initialize  array by the file  ***/
+            /*** Fill this array by the file data ***/
             for (int i = 0; i < PURCHASES_NUMBER; i++) {
                 int numberOfUnits = sc.nextInt();
                 double discountPercent = sc.nextDouble();
@@ -27,96 +22,66 @@ public class Runner {
                 purchases[i] = new Purchase(numberOfUnits, discountPercent, dayOfWeek);
             }
 
-            /*** Initialize this array by the file data ***/
-            for (Purchase purchase : purchases) {
-                System.out.println(purchase.toString());
-            }
+            /*** Output this array ***/
+            printPurchaseArray(purchases);
 
-            /*** Calculate the average cost of all purchases (3 digits after the point) ***/
-            int totalPurchasesNumber = 0;
+            /*** Calculate the average cost of all purchases (3 digits after the point); Calculate the total cost of all purchases on Monday; Calculate the day with the maximum purchase cost ***/
             long totalCost = 0;
-            for (int i = 0; i < PURCHASES_NUMBER; i++) {
-                totalCost += purchases[i].getCost();
-                totalPurchasesNumber += purchases[i].getNumber();
-            }
-
-
-            double averageCost = (double) totalCost / totalPurchasesNumber;
-            System.out.format("\nAverage cost: %.3f", averageCost);
-
-
-            /*** Calculate the total cost of all purchases on Monday ***/
             long totalMondaysCost = 0;
+            long maxCost = 0;
+            double meanCost = 0.0;
+            WeekDay maxCostDay = null;
+
             for (Purchase purchase : purchases) {
+                long cost = purchase.getCost();
+                totalCost += cost;
+
                 if (purchase.getWeekDay() == WeekDay.MONDAY) {
-                    totalMondaysCost += purchase.getCost();
+                    totalMondaysCost += cost;
                 }
-            }
 
-            System.out.println("\nTotal cost on Mondays: " + Financial.getValueInEuro(totalMondaysCost));
-
-            /*** Calculate the day with the maximum purchase cost ***/
-            long[] purchasesCosts = new long[PURCHASES_NUMBER];
-            for (int i = 0; i < PURCHASES_NUMBER; i++) {
-                purchasesCosts[i] = purchases[i].getCost();
-            }
-
-            int maxIndex = 0;
-            long max = purchasesCosts[0];
-            for (int i = 1; i < PURCHASES_NUMBER; i++) {
-                if (purchasesCosts[i] > max) {
-                    max = purchasesCosts[i];
-                    maxIndex = i;
+                if (purchase.getCost() > maxCost){
+                    maxCost = cost;
+                    maxCostDay = purchase.getWeekDay();
                 }
+
             }
-            System.out.println("\nThe day with the maximum purchase cost: " + purchases[maxIndex].getWeekDay() + "\n");
+
+            if(purchases.length > 0) {
+                meanCost = ((double) totalCost) / purchases.length;
+            }
+
+            System.out.format("\nAverage cost: %.3f", meanCost); //4.1
+
+            System.out.println("\nTotal cost on Mondays: " + Financial.getValueInEuro(totalMondaysCost)); //4.2
+
+            System.out.println("\nThe day with the maximum purchase cost: " + maxCostDay + "\n"); //4.3
+
+
 
             /*** Sort the array by the field number in the ascending order by the method sort of the class Arrays. ***/
-
             Arrays.sort(purchases);
-            for (Purchase purchase : purchases) {
-                System.out.println(purchase);
+            printPurchaseArray(purchases);
+
+
+            /*** Purchase with number of units = 5 from the file ***/
+            int index = Arrays.binarySearch(purchases, new Purchase(5, 0, 0));
+            if (index < 0) {
+                System.out.println("No such element in the array");
+            }
+            else{
+                System.out.println("\nPurchase with number of units = 5:\n" + purchases[index]);
             }
 
         } catch (FileNotFoundException e) {
             System.err.println("Input file is not found");
         }
+    }
 
-
-
-        /*** Purchase with number of units = 5 from all files ***/
-        String[] filesArray = new String[]{"src/in.txt", "src/in1.txt", "src/in2.txt", "src/in3.txt", "src/in4.txt", "src/in5.txt", "src/in6.txt"};
-
-        for (int i = 0; i < filesArray.length; i++) {
-            try (Scanner sc = new Scanner(new FileReader(filesArray[i]))) {
-                sc.useLocale(Locale.ENGLISH);
-                final int PURCHASES_NUMBER = sc.nextInt();
-
-                if (PURCHASES_NUMBER < 0 || PURCHASES_NUMBER > 9) {
-                    throw new RuntimeException("Incorrect number at the first line");
-                }
-
-                Purchase[] purchases = new Purchase[PURCHASES_NUMBER];
-
-                for (int j = 0; j < PURCHASES_NUMBER; j++) {
-                    int numberOfUnits = sc.nextInt();
-                    double discountPercent = sc.nextDouble();
-                    int dayOfWeek = sc.nextInt();
-                    purchases[j] = new Purchase(numberOfUnits, discountPercent, dayOfWeek);
-                }
-
-                Arrays.sort(purchases);
-
-                int index = Arrays.binarySearch(purchases, new Purchase(5, 0, 0));
-                if (index < 0) {
-                    System.out.println("No such element in the array");
-                }
-                else{
-                    System.out.println("\nPurchase with number of units = 5:\n" + purchases[index]);
-                }
-            } catch (FileNotFoundException e) {
-                System.err.println("Input file is not found");
-            }
+    private static void printPurchaseArray(Purchase[] purchases){
+        System.out.println(Purchase.NAME + " " + Purchase.PRICE); //constants
+        for (Purchase purchase : purchases) {
+            System.out.println(purchase); //array content
         }
     }
 }
