@@ -1,0 +1,6 @@
+ Purchase Milk 140 3
+ DiscountPurchase Bread 100 8 24
+ QuantityDiscountPurchase Cheese 300 12 45
+ Purchase Water 50 10
+ DiscountPurchase Egg 10 12 3
+ QuantityDiscountPurchase Butter 500 3 50
