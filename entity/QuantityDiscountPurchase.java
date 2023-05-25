@@ -1,7 +1,7 @@
 package entity;
 
 public class QuantityDiscountPurchase extends AbstractPurchase {
-    private static final int DISCOUNT_THRESHOLD = 5;
+    private static final int NUMBER_FOR_DISCOUNT = 5;
     private double discountRate;
 
     public QuantityDiscountPurchase() {
@@ -20,14 +20,13 @@ public class QuantityDiscountPurchase extends AbstractPurchase {
         this.discountRate = discountRate;
     }
 
+
     @Override
-    public Euro getCost() {
-        Euro unitCost = product.getPrice();
-        Euro totalCost = new Euro(unitCost.getValue() * numberOfUnits);
-        if (numberOfUnits > DISCOUNT_THRESHOLD) {
-            Euro discountAmount = new Euro(totalCost.getValue() * discountRate);
-            totalCost = new Euro(totalCost.getValue()- discountAmount.getValue());
+    public Euro getFinalCost(Euro baseCost) {
+        if (getNumberOfUnits() > NUMBER_FOR_DISCOUNT) {
+            baseCost.mul(1 - (discountRate / 100.0), Euro.RoundMethod.ROUND, 0);
         }
-        return totalCost;
+        return baseCost;
     }
 }
+

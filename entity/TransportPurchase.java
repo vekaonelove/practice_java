@@ -19,10 +19,7 @@ public class TransportPurchase extends AbstractPurchase {
         this.transportExpenses = transportExpenses;
     }
 
-    @Override
-    public Euro getCost() {
-        Euro unitCost = product.getPrice();
-        Euro totalCost = new Euro(unitCost.getValue() * numberOfUnits);
-        return new Euro(totalCost.getValue() + transportExpenses.getValue());
+    public Euro getFinalCost(Euro baseCost) {
+        return baseCost.subtract(transportExpenses);
     }
 }

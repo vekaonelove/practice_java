@@ -4,10 +4,10 @@ public class Euro {
     private final int value;
 
     public Euro() {
+        this.value = 0;
     }
 
     public Euro(int value) {
-        super();
         this.value = value;
     }
 
@@ -28,18 +28,15 @@ public class Euro {
     }
 
     public Euro add (Euro euro){
-        value += euro.value;
-        return this;
+        return new Euro(value + euro.value);
     }
 
     public Euro subtract(Euro euro){
-        value -= euro.value;
-        return this;
+        return new Euro(value - euro.value);
     }
 
     public Euro multiply(int x){
-        value *= x;
-        return this;
+        return new Euro(value * x);
     }
 
     private static int pow10(int d){
@@ -47,35 +44,32 @@ public class Euro {
         return tenPowD[d];
     }
 
-
-    public Euro mul(double k, RoundMethod roundMethod, int d){
-        value = roundMethod.round(value * k, d);
-        return this;
+    protected Euro round(RoundMethod roundMethod, int d){
+        double roundedValue = roundMethod.round(value / pow10(d)) * pow10(d);
+        return new Euro((int) roundedValue);
     }
-
+    public Euro mul(double k, RoundMethod roundMethod, int d){
+        double roundedValue = roundMethod.round(value * k / pow10(d)) * pow10(d);
+        return new Euro((int) roundedValue);
+    }
     public enum RoundMethod {
         FLOOR {
-            public double roundFunction(double d) {
+            public double round(double d) {
                 return Math.floor(d);
             }
         },
         ROUND{
-            public double roundFunction(double d) {
+            public double round(double d) {
                 return Math.round(d);
             }
         },
         CEIL {
-            public double roundFunction(double d) {
+            public double round(double d) {
                 return Math.ceil(d);
             }
         };
 
-        protected abstract double roundFunction(double value);
-        private int round(double roundedValue, int d) {
-            int tenPow = pow10(d);
-            int result = (int) roundFunction(roundedValue / tenPow) * tenPow;
-            return result;
-        }
+        abstract double round(double value);
     }
 
 

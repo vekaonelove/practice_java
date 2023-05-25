@@ -1,9 +1,11 @@
 package entity;
 public class Product {
-    private String name;
-    private Euro price;
+    private final String name;
+    private final Euro price;
 
     public Product() {
+        this.name = "";
+        this.price = new Euro();
     }
 
     public Product(String name, Euro price) {
@@ -15,17 +17,10 @@ public class Product {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Euro getPrice() {
         return price;
     }
 
-    public void setPrice(Euro price) {
-        this.price = price;
-    }
 
     @Override
     public String toString() {
